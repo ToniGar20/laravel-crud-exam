@@ -43,7 +43,7 @@ class PostRequest extends FormRequest
             'heading.between' => 'El extracto ha de tener entre 5 y 50 caracteres',
 
             'body.required' => 'El contenido del post es requerido',
-            'body.size' => 'El contenido del pos ha de tener al menos 5 caracteres',
+            'body.between' => 'El contenido del pos ha de tener al menos 5 caracteres',
 
             'commentable.required' => 'Indica si el post es comentable',
 
