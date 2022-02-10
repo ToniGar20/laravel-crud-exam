@@ -4,10 +4,19 @@
 
 @section('content')
 
-    <div class="d-flex col-8 justify-content-start align-items-start p-5">
+    <div class="align-items-start p-5">
         @if(sizeof($currentPosts) === 0)
             <p>No hay posts para mostrar. ¡Añade el primero!</p>
         @else
+
+            <div class="mb-4">
+                <form class="mt-4" method="get" action="{{ route('posts.create') }}">
+                    @csrf
+                    @method('GET')
+                    <button class="bg-warning text-white btn-md rounded-2 px-3" type="submit">+ Añadir post</button>
+                </form>
+            </div>
+
             <table class="table table-dark">
                 <tbody>
                 <tr>
@@ -48,6 +57,14 @@
                 </tbody>
             </table>
         @endif
+
+            <div class="mt-4"><!-- Logout -->
+                <form method="POST" action="/logout">
+                    @csrf
+                    <button class="bg-info text-white btn-md rounded-2 px-3" type="submit">Cerrar sesión</button>
+                </form>
+            </div>
+
     </div>
 
 @endsection
