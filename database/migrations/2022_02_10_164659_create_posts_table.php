@@ -17,7 +17,7 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->string('title', 50);
             $table->string('heading', 50);
-            $table->integer('body');
+            $table->string('body', 1000);
             $table->boolean('is_private');
             $table->boolean('commentable');
             $table->boolean('expires');
