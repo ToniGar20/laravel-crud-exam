@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -13,7 +16,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $currentPosts = Post::all();
+        return view('posts.index', compact('currentPosts'));
     }
 
     /**
@@ -21,9 +25,11 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($lang='es')
     {
-        //
+        App::setLocale($lang);
+
+        return view('posts.create');
     }
 
     /**
@@ -34,7 +40,38 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        //$request->validated();
+
+        $currentUser = Auth::user()->id;
+
+        $commentableValue = 0;
+        if($request->input('commentable')){
+            $commentableValue = 1;
+        }
+
+        $expiresValue = 0;
+        if($request->input('expires')){
+            $expiresValue = 1;
+        }
+
+        $privateValue = 0;
+        if($request->input('access') === 'private') {
+            $privateValue = 1;
+        }
+
+        Post::create([
+            'title' => $request->input('title'),
+            'heading' => $request->input('heading'),
+            'body' => $request->input('body'),
+            'is_private' => $privateValue,
+            'commentable' => $commentableValue,
+            'expires' => $expiresValue,
+            'user_id_created_by' => $currentUser
+        ]);
+
+
+        return redirect('posts');
     }
 
     /**
