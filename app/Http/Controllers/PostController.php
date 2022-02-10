@@ -40,8 +40,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-
-        //$request->validated();
+        //Validation with form request
+        $request->validated();
 
         $currentUser = Auth::user()->id;
 
