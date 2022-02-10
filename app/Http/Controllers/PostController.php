@@ -41,7 +41,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //Validation with form request
-        $request->validated();
+        //$request->validated()->all;
 
         $currentUser = Auth::user()->id;
 
@@ -91,9 +91,12 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id , $lang = 'es')
     {
-        //
+        App::setLocale($lang);
+
+        $currentPost = Post::where('id', $id)->first();
+        return view('posts.edit')->with('currentPost', $currentPost);
     }
 
     /**
@@ -105,7 +108,36 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        //Validation with form request
+        //$request->validated()->all;
+
+        $commentableValue = 0;
+        if($request->input('commentable')){
+            $commentableValue = 1;
+        }
+
+        $expiresValue = 0;
+        if($request->input('expires')){
+            $expiresValue = 1;
+        }
+
+        $privateValue = 0;
+        if($request->input('access') === 'private') {
+            $privateValue = 1;
+        }
+
+        Post::where('id', $id)->update([
+            'title' => $request->input('title'),
+            'heading' => $request->input('heading'),
+            'body' => $request->input('body'),
+            'is_private' => $privateValue,
+            'commentable' => $commentableValue,
+            'expires' => $expiresValue
+        ]);
+
+        return redirect('/posts');
+
     }
 
     /**
@@ -116,6 +148,8 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        $currentPost = Post::where('id', $id)->delete();
+        return redirect('posts');
     }
 }
