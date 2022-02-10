@@ -19,14 +19,13 @@ class CreatePostsTable extends Migration
             $table->string('heading', 50);
             $table->integer('body');
             $table->boolean('is_private');
-            $table->boolean('is_private');
             $table->boolean('commentable');
             $table->boolean('expires');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('user_id_created_by');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
 
-            $table->foreign('user_id')
+            $table->foreign('user_id_created_by')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade'); // If a user is deleted, his contacts are deleted too
